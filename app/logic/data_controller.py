@@ -18,3 +18,10 @@ class DataController:
             self.current_data = self.formatter.format_coin_data(raw_data)
             return self.current_data
         return None
+    
+    def get_coin_history(self, coin_id):
+        raw_data = self.api.fetch_coin_history(coin_id, days=7, currency="usd")
+        if not raw_data:
+            return None
+        
+        return self.formatter.format_coin_history(raw_data)

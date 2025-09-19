@@ -262,3 +262,27 @@ QTableWidget:focus, QTableWidget::item:focus {
     outline: none;
     border: none;
 }
+
+/* ===== CHART CONTAINER STYLES ===== */
+#coinChart {
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+#chartPlaceholder {
+    color: #94a3b8;
+    font-size: 16px;
+    padding: 40px;
+    line-height: 1.6;
+}
+
+/* Dark Theme Chart Container */
+QMainWindow[darkMode="true"] #coinChart {
+    background-color: #1e293b;
+    border: 1px solid #334155;
+}
+
+QMainWindow[darkMode="true"] #chartPlaceholder {
+    color: #64748b;
+}

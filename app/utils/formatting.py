@@ -1,5 +1,6 @@
 # app/utils/formatting.py
 from typing import List, Dict, Any
+import datetime
 
 class DataFormatter:
     """A utility class for formatting cryptocurrency data."""
@@ -9,6 +10,7 @@ class DataFormatter:
         """Formats raw API data into a structured list of dictionaries."""
         return [
             {
+                "id": coin.get('id', ''),
                 "rank": coin.get('market_cap_rank', 0),
                 "name": coin.get('name', 'N/A'),
                 "symbol": coin.get('symbol', '').upper(),
@@ -48,3 +50,17 @@ class DataFormatter:
         if change is None:
             return "N/A"
         return f"{change:+.2f}%"
+    
+    @staticmethod
+    def format_coin_history(raw_history: Dict[str, Any]) -> Dict[str, List]:
+        """Format 7-day historical data into timestamps and prices."""
+        prices = raw_history.get("prices", [])
+        
+        # Extract timestamps (ms) and price
+        timestamps = [
+            datetime.datetime.fromtimestamp(p[0] / 1000).strftime("%b %d")
+            for p in prices
+        ]
+        values = [p[1] for p in prices]
+
+        return {"timestamps": timestamps, "prices": values}

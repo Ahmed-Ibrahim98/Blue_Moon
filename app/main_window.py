@@ -42,13 +42,14 @@ class MainWindow(QMainWindow):
         content_layout.setSpacing(20)
 
         self.table = TableView(self.data_controller)
-        self.chart = ChartView()
-        content_layout.addWidget(self.table, 3)
-        content_layout.addWidget(self.chart, 2)
+        self.chart = ChartView(self)
+        content_layout.addWidget(self.table, 55)
+        content_layout.addWidget(self.chart, 45)
 
         main_layout.addWidget(content_widget)
 
         self.header.refresh_requested.connect(self.table.refresh_data)
+        self.table.coin_selected.connect(self.chart.display_chart)
         self.header.theme_toggled.connect(self.toggle_theme)
 
     def toggle_theme(self):
@@ -69,3 +70,7 @@ class MainWindow(QMainWindow):
         app = QApplication.instance()
         if app:
             app.setStyleSheet(self.style_sheet)
+        
+        # 🔹 NEW: tell chart to re-style itself if data is loaded
+        if hasattr(self, "chart"):
+            self.chart.update_chart_style()

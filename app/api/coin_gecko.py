@@ -41,3 +41,19 @@ class CoinGeckoAPI:
         except requests.exceptions.RequestException as e:
             print(f"API Error fetching top coins: {e}")
             return None
+    
+    def fetch_coin_history(self, coin_id: str, days: int = 7, currency: str = "usd"):
+        """Fetch historical market chart data for a coin."""
+        url = f"{self.base_url}/coins/{coin_id}/market_chart"
+        params = {
+            "vs_currency": currency,
+            "days": days,
+            "interval": "daily"
+        }
+        try:
+            response = requests.get(url, params=params, timeout=10)
+            response.raise_for_status()
+            return response.json()
+        except requests.RequestException as e:
+            print(f"API Error fetching history for {coin_id}: {e}")
+            return None
