@@ -1,6 +1,6 @@
 # app/views/chart_view.py
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtWebEngineWidgets import QWebEngineView
 import plotly.graph_objs as go
 import plotly.io as pio
@@ -9,6 +9,7 @@ from app.logic.data_controller import DataController
 
 
 class ChartView(QWidget):
+    chart_status = Signal(str, str)
     def __init__(self, main_window, parent=None):
         super().__init__(parent)
         self.setObjectName("coinChart")
@@ -47,19 +48,24 @@ class ChartView(QWidget):
     def display_chart(self, coin_data: dict):
         """Fetch and display the 7-day price chart for a coin."""
         coin_id = coin_data.get("id")
-        self._coin_name = coin_data.get("name")
+        self._coin_name = coin_data.get("name") or coin_id
         if not coin_id:
             return
 
         history = self.controller.get_coin_history(coin_id)
         if not history:
+            coin_name = self._coin_name
             self.show_error("⚠️ Failed to load chart data.")
+            self.chart_status.emit(f"Failed to load chart for {coin_name}", "error")
             return
 
         # Store data so we can re-style later
         self._chart_data = history
         self._current_coin_id = coin_id
         self.update_chart_style()
+        # Status for successful chart load
+        self.chart_status.emit(f"Chart loaded for {self._coin_name}", "success")
+
 
     def update_chart_style(self):
         """Re-render the chart with the current theme (no re-fetch)."""

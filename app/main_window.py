@@ -5,6 +5,7 @@ from PySide6.QtGui import QIcon
 from .views.header_view import HeaderView
 from .views.table_view import TableView
 from .views.chart_view import ChartView
+from app.views.status_bar_view import StatusBarView
 from .logic.data_controller import DataController
 from app.logic.search_algorithm import SearchAlgorithm
 from app.utils.dialog import ExportDialog
@@ -51,8 +52,13 @@ class MainWindow(QMainWindow):
 
         main_layout.addWidget(content_widget)
 
+        self.status_bar = StatusBarView(self)
+        self.setStatusBar(self.status_bar)
+
         self.header.refresh_requested.connect(self.table.refresh_data)
+        self.table.status_update.connect(lambda msg, type: self.status_bar.show_message(msg, status_type=type))
         self.table.coin_selected.connect(self.chart.display_chart)
+        self.chart.chart_status.connect(lambda msg, type: self.status_bar.show_message(msg, status_type=type))
         self.header.theme_toggled.connect(self.toggle_theme)
         self.header.search_changed.connect(self.on_search)
         self.header.export_requested.connect(self.export_csv)
@@ -60,6 +66,10 @@ class MainWindow(QMainWindow):
     def toggle_theme(self):
         """Toggles the application's theme between light and dark."""
         self.is_dark = not self.is_dark
+        if self.is_dark:
+            self.status_bar.show_message("Dark Mode", status_type="success")
+        else:
+            self.status_bar.show_message("Light Mode", status_type="success")
         self.apply_theme()
 
     # This is the corrected method
@@ -89,6 +99,12 @@ class MainWindow(QMainWindow):
         current_coin = self.chart.current_coin_id()
         if current_coin and not any(c["id"] == current_coin for c in filtered):
             self.chart.clear_chart()
+
+        # Update status bar based on search results
+        if filtered:
+            self.status_bar.show_message(f"{len(filtered)} coins found", status_type="success")
+        else:
+            self.status_bar.show_message("No coins matched your search", status_type="warning")
     
     def export_csv(self):
         dialog = ExportDialog(self)
@@ -97,7 +113,7 @@ class MainWindow(QMainWindow):
             if file_path:
                 success = FileSaver.save_csv(file_path, self.table.all_data, raw=raw)
                 if success:
-                    print(f"✅ CSV exported to {file_path}")
+                    self.status_bar.show_message(f"CSV exported to {file_path}", status_type="success")
                 else:
-                    print("❌ Export failed")
+                    self.status_bar.show_message("Export failed", status_type="error")
 

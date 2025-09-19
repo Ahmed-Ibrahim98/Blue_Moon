@@ -286,3 +286,56 @@ QMainWindow[darkMode="true"] #coinChart {
 QMainWindow[darkMode="true"] #chartPlaceholder {
     color: #64748b;
 }
+
+/* === STATUS BAR (UPDATED) === */
+QStatusBar {
+    /* keep the bar visually subtle and match content background */
+    background-color: transparent;
+    border-top: 1px solid #e6eaf2; /* light divider in light theme */
+    padding: 8px 16px;            /* more breathing room */
+    min-height: 36px;            /* ensures consistent height */
+}
+
+/* default (light) text color and spacing for labels inside the status bar */
+QStatusBar QLabel {
+    color: #1a2a3a;      /* dark text on light background */
+    font-size: 13px;
+    padding: 2px 6px;
+    margin-left: 6px;
+}
+
+/* make the primary message slightly bolder when you want to highlight it */
+QStatusBar QLabel#statusMessage {
+    font-weight: 600;
+}
+
+/* quick status-type styles (set via: label.setProperty('statusType','error') ) */
+QStatusBar QLabel[statusType="success"] { color: #16a34a; font-weight: 600; }
+QStatusBar QLabel[statusType="warning"] { color: #f59e0b; font-weight: 600; }
+QStatusBar QLabel[statusType="error"]   { color: #dc2626; font-weight: 700; }
+
+/* ===== DARK THEME VARIANTS ===== */
+QMainWindow[darkMode="true"] QStatusBar {
+    background-color: transparent;
+    border-top: 1px solid #334155; /* darker divider for dark theme */
+    padding: 8px 16px;
+    min-height: 36px;
+}
+
+QMainWindow[darkMode="true"] QStatusBar QLabel {
+    color: #e2e8f0; /* light text on dark background */
+    font-size: 13px;
+    padding: 2px 6px;
+    margin-left: 6px;
+}
+
+QMainWindow[darkMode="true"] QStatusBar QLabel#statusMessage {
+    font-weight: 600;
+    color: #cbd5e1;
+}
+
+/* dark-mode overrides for status types to keep visibility */
+QMainWindow[darkMode="true"] QStatusBar QLabel[statusType="success"] { color: #22c55e; font-weight: 600; }
+QMainWindow[darkMode="true"] QStatusBar QLabel[statusType="warning"] { color: #f59e0b; font-weight: 600; }
+QMainWindow[darkMode="true"] QStatusBar QLabel[statusType="error"]   { color: #fb7185; font-weight: 700; }
+
