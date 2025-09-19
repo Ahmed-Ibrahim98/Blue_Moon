@@ -9,6 +9,7 @@ class HeaderView(QWidget):
     theme_toggled = Signal()
     refresh_requested = Signal()
     search_changed = Signal(str)
+    export_requested = Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -40,6 +41,7 @@ class HeaderView(QWidget):
 
         export_csv_button = QPushButton("Export CSV")
         export_csv_button.setObjectName("headerButton")
+        export_csv_button.clicked.connect(self.export_requested.emit)  # 🔹 emit signal
 
         layout.addWidget(title_label)
         layout.addStretch()

@@ -7,6 +7,8 @@ from .views.table_view import TableView
 from .views.chart_view import ChartView
 from .logic.data_controller import DataController
 from app.logic.search_algorithm import SearchAlgorithm
+from app.utils.dialog import ExportDialog
+from app.utils.file_saver import FileSaver
 from .config import LOGO_ICON
 
 class MainWindow(QMainWindow):
@@ -53,6 +55,7 @@ class MainWindow(QMainWindow):
         self.table.coin_selected.connect(self.chart.display_chart)
         self.header.theme_toggled.connect(self.toggle_theme)
         self.header.search_changed.connect(self.on_search)
+        self.header.export_requested.connect(self.export_csv)
 
     def toggle_theme(self):
         """Toggles the application's theme between light and dark."""
@@ -86,4 +89,15 @@ class MainWindow(QMainWindow):
         current_coin = self.chart.current_coin_id()
         if current_coin and not any(c["id"] == current_coin for c in filtered):
             self.chart.clear_chart()
+    
+    def export_csv(self):
+        dialog = ExportDialog(self)
+        if dialog.exec():
+            file_path, raw = dialog.get_options()
+            if file_path:
+                success = FileSaver.save_csv(file_path, self.table.all_data, raw=raw)
+                if success:
+                    print(f"✅ CSV exported to {file_path}")
+                else:
+                    print("❌ Export failed")
 
