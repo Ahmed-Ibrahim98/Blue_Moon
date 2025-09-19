@@ -13,7 +13,11 @@ class TableView(QWidget):
         super().__init__(parent)
         self.data_controller = data_controller
         self.setObjectName("coinsTable")
+
+        # Store both full dataset and filtered/visible data
+        self.all_data: List[Dict] = []
         self.current_data: List[Dict] = []
+
         self.sort_column = 0  # Default: Rank
         self.sort_order = Qt.SortOrder.AscendingOrder
 
@@ -50,7 +54,8 @@ class TableView(QWidget):
         """Fetches fresh data from the controller and repopulates the table."""
         data = self.data_controller.fetch_top_coins()
         if data:
-            self.current_data = data
+            self.all_data = data  # keep full dataset
+            self.current_data = list(self.all_data)  # working copy for filtering/sorting
             self.apply_sorting()
 
     def populate_table(self, data: List[Dict]):
@@ -97,6 +102,7 @@ class TableView(QWidget):
         self.apply_sorting()
 
     def apply_sorting(self):
+        """Sort only the currently visible (filtered) data, not the full dataset."""
         if not self.current_data:
             return
         
@@ -111,8 +117,8 @@ class TableView(QWidget):
         
         sort_key = sort_key_map.get(self.sort_column)
         if sort_key:
-            sorted_data = sorted(self.current_data, key=lambda x: x[sort_key], reverse=reverse)
-            self.populate_table(sorted_data)
+            self.current_data = sorted(self.current_data, key=lambda x: x[sort_key], reverse=reverse)
+            self.populate_table(self.current_data)
             self.table.horizontalHeader().setSortIndicator(self.sort_column, self.sort_order)
 
     def on_selection_changed(self):

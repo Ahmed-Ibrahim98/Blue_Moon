@@ -6,6 +6,7 @@ from .views.header_view import HeaderView
 from .views.table_view import TableView
 from .views.chart_view import ChartView
 from .logic.data_controller import DataController
+from app.logic.search_algorithm import SearchAlgorithm
 from .config import LOGO_ICON
 
 class MainWindow(QMainWindow):
@@ -51,6 +52,7 @@ class MainWindow(QMainWindow):
         self.header.refresh_requested.connect(self.table.refresh_data)
         self.table.coin_selected.connect(self.chart.display_chart)
         self.header.theme_toggled.connect(self.toggle_theme)
+        self.header.search_changed.connect(self.on_search)
 
     def toggle_theme(self):
         """Toggles the application's theme between light and dark."""
@@ -74,3 +76,14 @@ class MainWindow(QMainWindow):
         # 🔹 NEW: tell chart to re-style itself if data is loaded
         if hasattr(self, "chart"):
             self.chart.update_chart_style()
+    
+    def on_search(self, query: str):
+        searcher = SearchAlgorithm(self.table.all_data)
+        filtered = searcher.search(query)
+        self.table.current_data = filtered
+        self.table.populate_table(filtered)
+        # Clear chart if current coin not in search results
+        current_coin = self.chart.current_coin_id()
+        if current_coin and not any(c["id"] == current_coin for c in filtered):
+            self.chart.clear_chart()
+

@@ -41,22 +41,24 @@ class ChartView(QWidget):
 
         # Store chart data so we can restyle without re-fetch
         self._chart_data = None
+        self._current_coin_id = None
+        self._coin_name = None
 
     def display_chart(self, coin_data: dict):
         """Fetch and display the 7-day price chart for a coin."""
         coin_id = coin_data.get("id")
+        self._coin_name = coin_data.get("name")
         if not coin_id:
             return
 
         history = self.controller.get_coin_history(coin_id)
         if not history:
-            self.chart_placeholder.setText("⚠️ Failed to load chart data.")
-            self.chart_placeholder.show()
-            self.browser.hide()
+            self.show_error("⚠️ Failed to load chart data.")
             return
 
         # Store data so we can re-style later
         self._chart_data = history
+        self._current_coin_id = coin_id
         self.update_chart_style()
 
     def update_chart_style(self):
@@ -91,7 +93,7 @@ class ChartView(QWidget):
         ))
 
         fig.update_layout(
-            title="7-Day Price (USD)",
+            title=f"{self._coin_name} - 7-Day Price (USD)",
             title_x=0.5,
             paper_bgcolor=bg_color,
             plot_bgcolor=bg_color,
@@ -110,3 +112,29 @@ class ChartView(QWidget):
         self.browser.setHtml(html)
         self.browser.show()
         self.chart_placeholder.hide()
+
+    def clear_chart(self):
+        """Reset chart to placeholder."""
+        self._chart_data = None
+        self._current_coin_id = None
+        self._coin_name = None
+        self.browser.hide()
+        self.chart_placeholder.setText(
+            "Price Chart Will Appear Here\n\n"
+            "Select a cryptocurrency from the table\n"
+            "to view its price chart."
+        )
+        self.chart_placeholder.show()
+
+    def show_error(self, message: str):
+        """Show an error message in the placeholder."""
+        self._chart_data = None
+        self._current_coin_id = None
+        self._coin_name = None
+        self.browser.hide()
+        self.chart_placeholder.setText(message)
+        self.chart_placeholder.show()
+
+    def current_coin_id(self):
+        """Return the coin_id of the currently displayed chart, or None."""
+        return self._current_coin_id

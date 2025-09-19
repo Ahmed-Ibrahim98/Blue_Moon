@@ -8,6 +8,7 @@ from ..config import (LIGHT_THEME_ICON, DARK_THEME_ICON,
 class HeaderView(QWidget):
     theme_toggled = Signal()
     refresh_requested = Signal()
+    search_changed = Signal(str)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -31,10 +32,11 @@ class HeaderView(QWidget):
         self.refresh_button.setObjectName("headerButton")
         self.refresh_button.clicked.connect(self.refresh_requested.emit)
 
-        search_field = QLineEdit()
-        search_field.setPlaceholderText("🔍 Search cryptocurrencies...")
-        search_field.setMinimumWidth(300)
-        search_field.setObjectName("searchField")
+        self.search_field = QLineEdit()
+        self.search_field.setPlaceholderText("🔍 Search cryptocurrencies...")
+        self.search_field.setMinimumWidth(300)
+        self.search_field.setObjectName("searchField")
+        self.search_field.textChanged.connect(self.search_changed.emit)
 
         export_csv_button = QPushButton("Export CSV")
         export_csv_button.setObjectName("headerButton")
@@ -43,7 +45,7 @@ class HeaderView(QWidget):
         layout.addStretch()
         layout.addWidget(self.theme_button)
         layout.addWidget(self.refresh_button)
-        layout.addWidget(search_field)
+        layout.addWidget(self.search_field)
         layout.addWidget(export_csv_button)
 
     def update_theme_icon(self, is_dark: bool):
@@ -54,3 +56,6 @@ class HeaderView(QWidget):
         else:
             self.theme_button.setIcon(QIcon(DARK_THEME_ICON))
             self.refresh_button.setIcon(QIcon(REFRESH_LIGHT_ICON))
+    
+    def get_search_text(self) -> str:
+        return self.search_field.text().strip()
