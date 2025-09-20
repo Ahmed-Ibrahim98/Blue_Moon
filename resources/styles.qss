@@ -1,12 +1,16 @@
 /* ===== CRYPTO APP STYLING ===== */
 
-/* Global Styles */
+/* ---------- Global ---------- */
 QMainWindow {
     background-color: #f8fafd;
     font-family: 'Segoe UI', sans-serif;
 }
 
-/* Header Styles */
+QMainWindow[darkMode="true"] {
+    background-color: #0f172a;
+}
+
+/* ---------- Header ---------- */
 #headerContainer {
     background-color: #ffffff;
     border-bottom: 1px solid #e6eaf2;
@@ -23,10 +27,7 @@ QMainWindow {
     background-color: #f0f4ff;
     border: 1px solid #d9e1ff;
 }
-
-#themeButton:hover {
-    background-color: #e2e9ff;
-}
+#themeButton:hover { background-color: #e2e9ff; }
 
 #headerButton {
     background-color: #f0f4ff;
@@ -36,10 +37,7 @@ QMainWindow {
     padding: 8px 14px;
     font-weight: 600;
 }
-
-#headerButton:hover {
-    background-color: #e2e9ff;
-}
+#headerButton:hover { background-color: #e2e9ff; }
 
 #searchField {
     background-color: #f7f9ff;
@@ -49,28 +47,46 @@ QMainWindow {
     color: #1a2a3a;
     selection-background-color: #2c5bdc;
 }
+#searchField::placeholder { color: #a0aec0; }
+#searchField:focus { border: 1px solid #2c5bdc; }
 
-#searchField::placeholder {
-    color: #a0aec0;
+/* ----- Dark header ----- */
+QMainWindow[darkMode="true"] #headerContainer {
+    background-color: #1e293b;
+    border-bottom: 1px solid #334155;
 }
-
-#searchField:focus {
-    border: 1px solid #2c5bdc;
+QMainWindow[darkMode="true"] #appTitle { color: #60a5fa; }
+QMainWindow[darkMode="true"] #themeButton {
+    background-color: #1e293b;
+    border: 1px solid #334155;
 }
+QMainWindow[darkMode="true"] #themeButton:hover { background-color: #334155; }
+QMainWindow[darkMode="true"] #headerButton {
+    background-color: #1e293b;
+    color: #60a5fa;
+    border: 1px solid #334155;
+}
+QMainWindow[darkMode="true"] #headerButton:hover { background-color: #334155; }
+QMainWindow[darkMode="true"] #searchField {
+    background-color: #1e293b;
+    border: 1px solid #334155;
+    color: #e2e8f0;
+}
+QMainWindow[darkMode="true"] #searchField:focus { border: 1px solid #60a5fa; }
 
-/* Content Area */
+/* ---------- Content ---------- */
 #contentWidget {
     background-color: #ffffff;
     border: none;
 }
+QMainWindow[darkMode="true"] #contentWidget { background-color: #1e293b; }
 
-/* Table Container */
+/* ---------- Table ---------- */
 #coinsTable {
     background-color: transparent;
     border: none;
 }
 
-/* Table Styles */
 #cryptoTable {
     background-color: #ffffff;
     border-radius: 12px;
@@ -79,32 +95,24 @@ QMainWindow {
     font-size: 14px;
     alternate-background-color: #f8fafc;
     outline: 0;
+    color: #1a2a3a; /* Default text color for light mode */
 }
 
 #cryptoTable::item {
     padding: 12px 8px;
     border: none;
+}
+
+/* Light mode selected */
+#cryptoTable::item:selected {
+    background-color: #e6f0ff;
     color: #1e293b;
 }
 
-#cryptoTable::item:selected {
-    background-color: #e6f0ff;
-    color: #1a2a3a;
-    border: none;
-    outline: none;
-}
+#cryptoTable::item:hover { background-color: #f1f5f9; }
+#cryptoTable::item:focus { border: none; outline: none; }
 
-#cryptoTable::item:hover {
-    background-color: #f1f5f9;
-    cursor: default;
-}
-
-#cryptoTable::item:focus {
-    border: none;
-    outline: none;
-}
-
-/* Table Header Styles */
+/* ----- Table Header (light) ----- */
 #cryptoTable QHeaderView::section {
     background-color: #f8fafc;
     padding: 12px 8px;
@@ -113,163 +121,48 @@ QMainWindow {
     color: #64748b;
     border-bottom: 2px solid #e2e8f0;
 }
-
 #cryptoTable QHeaderView::section:hover {
     background-color: #e2e8f0;
     color: #374151;
     cursor: pointer;
 }
 
-/* Chart Styles */
-#coinChart {
-    background-color: #ffffff;
-    border-radius: 12px;
-    border: 1px solid #e2e8f0;
-}
-
-#chartPlaceholder {
-    color: #94a3b8;
-    font-size: 16px;
-    padding: 40px;
-    line-height: 1.6;
-}
-
-/* ===== DARK THEME ===== */
-QMainWindow[darkMode="true"] {
-    background-color: #0f172a;
-}
-
-QMainWindow[darkMode="true"] #headerContainer {
-    background-color: #1e293b;
-    border-bottom: 1px solid #334155;
-}
-
-QMainWindow[darkMode="true"] #appTitle {
-    color: #60a5fa;
-}
-
-QMainWindow[darkMode="true"] #themeButton {
-    background-color: #1e293b;
-    border: 1px solid #334155;
-}
-
-QMainWindow[darkMode="true"] #themeButton:hover {
-    background-color: #334155;
-}
-
-QMainWindow[darkMode="true"] #headerButton {
-    background-color: #1e293b;
-    color: #60a5fa;
-    border: 1px solid #334155;
-}
-
-QMainWindow[darkMode="true"] #headerButton:hover {
-    background-color: #334155;
-}
-
-QMainWindow[darkMode="true"] #searchField {
-    background-color: #1e293b;
-    border: 1px solid #334155;
-    color: #e2e8f0;
-}
-
-QMainWindow[darkMode="true"] #searchField:focus {
-    border: 1px solid #60a5fa;
-}
-
-QMainWindow[darkMode="true"] #contentWidget {
-    background-color: #1e293b;
-}
-
-/* Dark Theme Table Styles */
+/* ----- Dark table ----- */
 QMainWindow[darkMode="true"] #cryptoTable {
     background-color: #1e293b;
     border: 1px solid #334155;
     gridline-color: #334155;
-    color: #e2e8f0;
     alternate-background-color: #1a243b;
+    color: #e2e8f0; /* Set default text color on the table, not individual items */
 }
 
-QMainWindow[darkMode="true"] #cryptoTable::item {
-    color: #e2e8f0;
-    border: none;
-}
-
+/* Selected row (dark mode) */
 QMainWindow[darkMode="true"] #cryptoTable::item:selected {
     background-color: #2d3748;
     color: #e2e8f0;
-    border: none;
-    outline: none;
+    border: 1px solid #334155;
 }
 
 QMainWindow[darkMode="true"] #cryptoTable::item:hover {
     background-color: #374151;
-    cursor: default;
 }
 
-/* Dark Theme Header Styles */
 QMainWindow[darkMode="true"] #cryptoTable QHeaderView::section {
     background-color: #1a243b;
     color: #cbd5e1;
     border-bottom: 2px solid #334155;
 }
-
 QMainWindow[darkMode="true"] #cryptoTable QHeaderView::section:hover {
     background-color: #2d3748;
     color: #e2e8f0;
-    cursor: pointer;
 }
 
-/* Dark Theme Chart Styles */
-QMainWindow[darkMode="true"] #coinChart {
-    background-color: #1e293b;
-    border: 1px solid #334155;
-}
-
-QMainWindow[darkMode="true"] #chartPlaceholder {
-    color: #64748b;
-}
-
-/* Sort indicator arrows (CSS-generated) */
-QHeaderView::down-arrow {
-    subcontrol-origin: padding;
-    subcontrol-position: center right;
-    width: 12px;
-    height: 12px;
-    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #64748b, stop:1 #64748b);
-    clip-path: polygon(0% 0%, 50% 100%, 100% 0%);
-}
-
-QHeaderView::up-arrow {
-    subcontrol-origin: padding;
-    subcontrol-position: center right;
-    width: 12px;
-    height: 12px;
-    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #64748b, stop:1 #64748b);
-    clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
-}
-
-QMainWindow[darkMode="true"] QHeaderView::down-arrow {
-    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #cbd5e1, stop:1 #cbd5e1);
-}
-
-QMainWindow[darkMode="true"] QHeaderView::up-arrow {
-    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #cbd5e1, stop:1 #cbd5e1);
-}
-
-/* Remove focus outlines globally */
-QTableWidget:focus, QTableWidget::item:focus {
-    outline: none;
-    border: none;
-}
-
-/* ===== CHART CONTAINER STYLES ===== */
+/* ---------- Chart ---------- */
 #coinChart {
     background-color: #ffffff;
     border-radius: 12px;
     border: 1px solid #e2e8f0;
 }
-
 #chartPlaceholder {
     color: #94a3b8;
     font-size: 16px;
@@ -277,65 +170,76 @@ QTableWidget:focus, QTableWidget::item:focus {
     line-height: 1.6;
 }
 
-/* Dark Theme Chart Container */
+/* ----- Dark chart ----- */
 QMainWindow[darkMode="true"] #coinChart {
     background-color: #1e293b;
     border: 1px solid #334155;
 }
+QMainWindow[darkMode="true"] #chartPlaceholder { color: #64748b; }
 
-QMainWindow[darkMode="true"] #chartPlaceholder {
-    color: #64748b;
+/* ---------- Sorting arrows ---------- */
+QHeaderView::down-arrow,
+QHeaderView::up-arrow {
+    subcontrol-origin: padding;
+    subcontrol-position: center right;
+    width: 12px;
+    height: 12px;
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #64748b, stop:1 #64748b);
+}
+QHeaderView::down-arrow {
+    clip-path: polygon(0% 0%, 50% 100%, 100% 0%);
+}
+QHeaderView::up-arrow {
+    clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
+}
+QMainWindow[darkMode="true"] QHeaderView::down-arrow,
+QMainWindow[darkMode="true"] QHeaderView::up-arrow {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                stop:0 #cbd5e1, stop:1 #cbd5e1);
 }
 
-/* === STATUS BAR (UPDATED) === */
+/* ---------- Table focus ---------- */
+QTableWidget:focus, QTableWidget::item:focus {
+    outline: none;
+    border: none;
+}
+
+/* === STATUS BAR === */
 QStatusBar {
-    /* keep the bar visually subtle and match content background */
     background-color: transparent;
-    border-top: 1px solid #e6eaf2; /* light divider in light theme */
-    padding: 8px 16px;            /* more breathing room */
-    min-height: 36px;            /* ensures consistent height */
-}
-
-/* default (light) text color and spacing for labels inside the status bar */
-QStatusBar QLabel {
-    color: #1a2a3a;      /* dark text on light background */
-    font-size: 13px;
-    padding: 2px 6px;
-    margin-left: 6px;
-}
-
-/* make the primary message slightly bolder when you want to highlight it */
-QStatusBar QLabel#statusMessage {
-    font-weight: 600;
-}
-
-/* quick status-type styles (set via: label.setProperty('statusType','error') ) */
-QStatusBar QLabel[statusType="success"] { color: #16a34a; font-weight: 600; }
-QStatusBar QLabel[statusType="warning"] { color: #f59e0b; font-weight: 600; }
-QStatusBar QLabel[statusType="error"]   { color: #dc2626; font-weight: 700; }
-
-/* ===== DARK THEME VARIANTS ===== */
-QMainWindow[darkMode="true"] QStatusBar {
-    background-color: transparent;
-    border-top: 1px solid #334155; /* darker divider for dark theme */
+    border-top: 1px solid #e6eaf2;
     padding: 8px 16px;
     min-height: 36px;
 }
 
-QMainWindow[darkMode="true"] QStatusBar QLabel {
-    color: #e2e8f0; /* light text on dark background */
+QStatusBar QLabel {
     font-size: 13px;
     padding: 2px 6px;
     margin-left: 6px;
+    color: #1a2a3a;
 }
 
-QMainWindow[darkMode="true"] QStatusBar QLabel#statusMessage {
+QStatusBar QLabel#statusMessage {
     font-weight: 600;
-    color: #cbd5e1;
 }
 
-/* dark-mode overrides for status types to keep visibility */
-QMainWindow[darkMode="true"] QStatusBar QLabel[statusType="success"] { color: #22c55e; font-weight: 600; }
-QMainWindow[darkMode="true"] QStatusBar QLabel[statusType="warning"] { color: #f59e0b; font-weight: 600; }
-QMainWindow[darkMode="true"] QStatusBar QLabel[statusType="error"]   { color: #fb7185; font-weight: 700; }
+/* ===== STATUS TYPES ===== */
+QStatusBar QLabel[statusType="success"] { color: #16a34a; font-weight: 600; }
+QStatusBar QLabel[statusType="warning"] { color: #f59e0b; font-weight: 600; }
+QStatusBar QLabel[statusType="error"]   { color: #dc2626; font-weight: 700; }
+QStatusBar QLabel[statusType="info"]    { color: #4d9af8; font-weight: 700; }
 
+/* ===== DARK THEME VARIANTS ===== */
+QMainWindow[darkMode="true"] QStatusBar {
+    border-top: 1px solid #334155;
+}
+
+QMainWindow[darkMode="true"] QStatusBar QLabel {
+    color: #e2e8f0;
+}
+
+QMainWindow[darkMode="true"] QStatusBar QLabel[statusType="success"] { color: #22c55e; }
+QMainWindow[darkMode="true"] QStatusBar QLabel[statusType="warning"] { color: #fbbf24; }
+QMainWindow[darkMode="true"] QStatusBar QLabel[statusType="error"]   { color: #fb7185; }
+QMainWindow[darkMode="true"] QStatusBar QLabel[statusType="info"]    { color: #60a5fa; }

@@ -1,5 +1,3 @@
-# app/main_window.py
-# Add QApplication to the imports
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout
 from PySide6.QtGui import QIcon
 from .views.header_view import HeaderView
@@ -28,7 +26,6 @@ class MainWindow(QMainWindow):
         self.apply_theme()
 
     def init_ui(self):
-        # This method remains unchanged
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
 
@@ -45,7 +42,7 @@ class MainWindow(QMainWindow):
         content_layout.setContentsMargins(20, 20, 20, 20)
         content_layout.setSpacing(20)
 
-        self.table = TableView(self.data_controller)
+        self.table = TableView(self, self.data_controller)
         self.chart = ChartView(self)
         content_layout.addWidget(self.table, 55)
         content_layout.addWidget(self.chart, 45)
@@ -62,6 +59,9 @@ class MainWindow(QMainWindow):
         self.header.theme_toggled.connect(self.toggle_theme)
         self.header.search_changed.connect(self.on_search)
         self.header.export_requested.connect(self.export_csv)
+        
+        # Connect the new signal for data availability
+        self.table.data_availability_changed.connect(self.header.enable_export_btn)
 
     def toggle_theme(self):
         """Toggles the application's theme between light and dark."""
@@ -72,7 +72,6 @@ class MainWindow(QMainWindow):
             self.status_bar.show_message("Light Mode", status_type="success")
         self.apply_theme()
 
-    # This is the corrected method
     def apply_theme(self):
         """Applies the current theme to the application."""
         self.header.update_theme_icon(self.is_dark)
@@ -86,7 +85,7 @@ class MainWindow(QMainWindow):
         if app:
             app.setStyleSheet(self.style_sheet)
         
-        # 🔹 NEW: tell chart to re-style itself if data is loaded
+        # Tell chart to re-style itself if data is loaded
         if hasattr(self, "chart"):
             self.chart.update_chart_style()
     
@@ -105,8 +104,15 @@ class MainWindow(QMainWindow):
             self.status_bar.show_message(f"{len(filtered)} coins found", status_type="success")
         else:
             self.status_bar.show_message("No coins matched your search", status_type="warning")
+        
+        self.table.clear_selection()
     
     def export_csv(self):
+        # Only allow export if there's data available
+        if not self.table.all_data:
+            self.status_bar.show_message("No data to export", status_type="error")
+            return
+            
         dialog = ExportDialog(self)
         if dialog.exec():
             file_path, raw = dialog.get_options()
@@ -116,4 +122,3 @@ class MainWindow(QMainWindow):
                     self.status_bar.show_message(f"CSV exported to {file_path}", status_type="success")
                 else:
                     self.status_bar.show_message("Export failed", status_type="error")
-

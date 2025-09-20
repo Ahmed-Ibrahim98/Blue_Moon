@@ -11,7 +11,7 @@ if __name__ == "__main__":
     # Load stylesheet content
     style_sheet = ""
     try:
-        with open(STYLESHEET_PATH, "r") as f:
+        with open(STYLESHEET_PATH, "r",encoding="utf-8") as f:
             style_sheet = f.read()
             app.setStyleSheet(style_sheet)
     except FileNotFoundError:
