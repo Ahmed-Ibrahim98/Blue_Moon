@@ -1,12 +1,12 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel
 from PySide6.QtCore import Qt, Signal
-import time
 
 from app.logic.data_controller import DataController
 from app.utils.graph_painter import ChartWidget
 
 
 class ChartView(QWidget):
+    """View for displaying cryptocurrency price charts."""
     chart_status = Signal(str, str)
     
     def __init__(self, main_window, parent=None):

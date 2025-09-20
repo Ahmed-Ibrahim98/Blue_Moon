@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QFileDialog, QCheckBox, QVBoxLayout, QDialog, QDia
 from PySide6.QtCore import QDateTime
 
 class ExportDialog(QDialog):
+    """Dialog for exporting data with options."""
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Export Data")
@@ -16,6 +17,7 @@ class ExportDialog(QDialog):
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
 
+        # Layout
         layout = QVBoxLayout(self)
         layout.addWidget(self.raw_checkbox)
         layout.addWidget(buttons)

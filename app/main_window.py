@@ -11,31 +11,41 @@ from app.utils.file_saver import FileSaver
 from .config import LOGO_ICON
 
 class MainWindow(QMainWindow):
+    """Main application window for the Blue Moon cryptocurrency dashboard."""
+
     # Update the constructor to accept the stylesheet
     def __init__(self, style_sheet: str = ""):
         super().__init__()
         self.style_sheet = style_sheet # Store the stylesheet
 
+        # Main window properties
         self.setWindowTitle("Crypto Dashboard")
         self.setWindowIcon(QIcon(LOGO_ICON))
         self.setGeometry(100, 100, 1200, 800)
         self.is_dark = False
 
+        # Data controller
         self.data_controller = DataController()
+        # Initialize UI components
         self.init_ui()
+        # Apply initial theme
         self.apply_theme()
 
     def init_ui(self):
+        """Initializes the main UI components and layout."""
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
 
+        # Create main layout
         main_layout = QVBoxLayout(central_widget)
         main_layout.setSpacing(0)
         main_layout.setContentsMargins(0, 0, 0, 0)
 
+        # Header
         self.header = HeaderView()
         main_layout.addWidget(self.header)
 
+        # Content area with table and chart
         content_widget = QWidget()
         content_widget.setObjectName("contentWidget")
         content_layout = QHBoxLayout(content_widget)
@@ -49,9 +59,11 @@ class MainWindow(QMainWindow):
 
         main_layout.addWidget(content_widget)
 
+        # Status bar
         self.status_bar = StatusBarView(self)
         self.setStatusBar(self.status_bar)
 
+        # Connect signals and slots
         self.header.refresh_requested.connect(self.table.refresh_data)
         self.table.status_update.connect(lambda msg, type: self.status_bar.show_message(msg, status_type=type))
         self.table.coin_selected.connect(self.chart.display_chart)
@@ -112,7 +124,8 @@ class MainWindow(QMainWindow):
         if not self.table.has_data():
             self.status_bar.show_message("No data to export", status_type="error")
             return
-            
+
+        # Confirm export options    
         dialog = ExportDialog(self)
         if dialog.exec():
             file_path, raw = dialog.get_options()

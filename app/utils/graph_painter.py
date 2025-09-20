@@ -5,6 +5,9 @@ from typing import List, Tuple, Optional
 
 
 class ChartWidget(QWidget):
+    """A custom QWidget to display a 7-day price chart for a cryptocurrency.
+    Supports light/dark themes and hover tooltips."""
+    
     def __init__(self, parent=None):
         super().__init__(parent)
         self.data: Optional[Tuple[List[str], List[float]]] = None
@@ -199,6 +202,7 @@ class ChartWidget(QWidget):
         painter.setPen(text_color)
         
         for i in range(5):
+            """this loop draws the Y-axis price labels"""
             price_val = min_price + (i / 4) * price_range
             y = chart_rect.bottom() - (i / 4) * chart_rect.height()
             
@@ -261,7 +265,8 @@ class ChartWidget(QWidget):
         font.setBold(True)
         painter.setFont(font)
         painter.setPen(text_color)
-        
+
+        # Set title with stablecoin note if applicable
         title = f"{self.coin_name} - 7-Day Price (USD)"
         if is_stablecoin:
             title += " (Stablecoin)"

@@ -4,6 +4,7 @@ from typing import List, Dict
 from app.utils.formatting import DataFormatter
 
 class FileSaver:
+    """Utility class for saving data to files."""
     @staticmethod
     def save_csv(file_path: str, data: List[Dict], raw: bool = False) -> bool:
         """Save list of coins (dicts) to CSV. Formatted or raw values depending on `raw`."""
@@ -12,6 +13,7 @@ class FileSaver:
 
         try:
             with open(file_path, mode="w", newline="", encoding="utf-8") as f:
+                """"Write CSV header and rows."""
                 fieldnames = ["Rank", "Name (Symbol)", "Price", "24h %", "Market Cap"]
                 writer = csv.DictWriter(f, fieldnames=fieldnames)
                 writer.writeheader()

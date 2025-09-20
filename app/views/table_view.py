@@ -8,7 +8,9 @@ from ..utils.formatting import DataFormatter
 
 
 class TableView(QWidget):
-    coin_selected = Signal(dict)
+    """View for displaying cryptocurrency data in a table."""
+    
+    coin_selected = Signal(dict)  # Emitted when a coin is selected
     status_update = Signal(str, str)  # message, status_type
     data_availability_changed = Signal(bool)  # New signal for data availability
 
@@ -28,6 +30,7 @@ class TableView(QWidget):
         self.refresh_data()
 
     def setup_ui(self):
+        """Set up the table UI."""
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
 
@@ -80,6 +83,8 @@ class TableView(QWidget):
             # Don't emit data_availability_changed(False) here - we still have old data to export
 
     def populate_table(self, data: List[Dict]):
+        """Populate the table with given coin data."""
+
         # Clear selection before populating new data
         self.table.clearSelection()
         self.table.setRowCount(len(data))
@@ -92,6 +97,9 @@ class TableView(QWidget):
             self.add_table_row(row, coin)
 
     def add_table_row(self, row: int, coin: Dict):
+        """Add a single row to the table for a coin."""
+
+        # Add rank with UserRole data for selection
         rank_item = QTableWidgetItem(str(coin["rank"]))
         rank_item.setData(Qt.ItemDataRole.UserRole, coin)
         rank_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -140,6 +148,7 @@ class TableView(QWidget):
         self.status_update.emit(f"Sorted by {sort_key_map.get(column, 'Unknown')}", "info")
 
     def apply_sorting(self):
+        """Sort current data based on selected column and order."""
         if not self.current_data:
             return
         reverse = self.sort_order == Qt.SortOrder.DescendingOrder
@@ -151,6 +160,7 @@ class TableView(QWidget):
             self.table.horizontalHeader().setSortIndicator(self.sort_column, self.sort_order)
 
     def on_selection_changed(self):
+        """Emit signal with selected coin data."""
         selected_items = self.table.selectedItems()
         if selected_items:
             coin_data = selected_items[0].data(Qt.ItemDataRole.UserRole)

@@ -23,6 +23,7 @@ class DataFormatter:
 
     @staticmethod
     def format_currency(value: float) -> str:
+        """Formats large numbers into human-readable strings with suffixes."""
         if not isinstance(value, (int, float)) or value <= 0:
             return "N/A"
         
@@ -36,6 +37,7 @@ class DataFormatter:
 
     @staticmethod
     def format_price(price: float) -> str:
+        """Formats price with appropriate decimal places based on magnitude."""
         if not isinstance(price, (int, float)) or price <= 0:
             return "N/A"
         
@@ -47,6 +49,7 @@ class DataFormatter:
 
     @staticmethod
     def format_percentage_change(change: float) -> str:
+        """Formats percentage change with sign and two decimal places."""
         if change is None:
             return "N/A"
         return f"{change:+.2f}%"

@@ -20,6 +20,7 @@ class DataController:
         return None
     
     def get_coin_history(self, coin_id):
+        """Fetches and formats 7-day historical data for a specific coin."""
         raw_data = self.api.fetch_coin_history(coin_id, days=7, currency="usd")
         if not raw_data:
             return None
