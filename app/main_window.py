@@ -108,8 +108,8 @@ class MainWindow(QMainWindow):
         self.table.clear_selection()
     
     def export_csv(self):
-        # Only allow export if there's data available
-        if not self.table.all_data:
+        # Only allow export if there's data available (even if it's old data)
+        if not self.table.has_data():
             self.status_bar.show_message("No data to export", status_type="error")
             return
             

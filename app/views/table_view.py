@@ -75,17 +75,18 @@ class TableView(QWidget):
             self.status_update.emit(f"Coins fetched at {timestamp}", "success")
             self.data_availability_changed.emit(True)  # Emit data available
         else:
-            self.status_update.emit("Failed to fetch coin data", "error")
-            self.data_availability_changed.emit(False)  # Emit no data available
+            # Only show error message, don't disable export if we have existing data
+            self.status_update.emit("Failed to fetch new data - using existing data", "warning")
+            # Don't emit data_availability_changed(False) here - we still have old data to export
 
     def populate_table(self, data: List[Dict]):
         # Clear selection before populating new data
         self.table.clearSelection()
         self.table.setRowCount(len(data))
         
-        # Emit data availability status
-        has_data = len(data) > 0
-        self.data_availability_changed.emit(has_data)
+        # Emit data availability status - check if we have ANY data (old or new)
+        has_any_data = len(self.all_data) > 0
+        self.data_availability_changed.emit(has_any_data)
         
         for row, coin in enumerate(data):
             self.add_table_row(row, coin)
@@ -158,3 +159,7 @@ class TableView(QWidget):
     def clear_selection(self):
         """Public method to clear table selection (for search, refresh, etc.)"""
         self.table.clearSelection()
+        
+    def has_data(self) -> bool:
+        """Check if there's any data available for export."""
+        return len(self.all_data) > 0
