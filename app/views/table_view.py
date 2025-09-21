@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QTableWidget, QTableWidgetItem, QHeaderView
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import Qt, Signal, QTimer
 from PySide6.QtGui import QColor, QBrush
 from typing import List, Dict
 from datetime import datetime
@@ -9,7 +9,6 @@ from ..utils.formatting import DataFormatter
 
 class TableView(QWidget):
     """View for displaying cryptocurrency data in a table."""
-    
     coin_selected = Signal(dict)  # Emitted when a coin is selected
     status_update = Signal(str, str)  # message, status_type
     data_availability_changed = Signal(bool)  # New signal for data availability
@@ -28,6 +27,9 @@ class TableView(QWidget):
 
         self.setup_ui()
         self.refresh_data()
+        self.refresh_timer = QTimer(self)
+        self.refresh_timer.timeout.connect(self.refresh_data)
+        self.refresh_timer.start(2 * 60 * 1000)  # 2 minutes in milliseconds
 
     def setup_ui(self):
         """Set up the table UI."""
@@ -80,7 +82,6 @@ class TableView(QWidget):
         else:
             # Only show error message, don't disable export if we have existing data
             self.status_update.emit("Failed to fetch new data - using existing data", "warning")
-            # Don't emit data_availability_changed(False) here - we still have old data to export
 
     def populate_table(self, data: List[Dict]):
         """Populate the table with given coin data."""

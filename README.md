@@ -113,7 +113,7 @@ Tracking crypto markets often means juggling between multiple sites and APIs.
 ## 🚀 **Usage**
 
 - On startup, Blue Moon shows the top 50 coins by market cap.  
-- You can refresh the data (manual refresh) to get the latest.  
+- You can refresh the data (manual refresh or Auto Refresh every two miniutes) to get the latest.  
 - Use search/filter to locate specific coins.  
 - Click “Export CSV” to export current displayed data.  
 
@@ -187,7 +187,6 @@ BLUE MOON/
 - 🧪 Add unit tests.
 - ⚙️ Support more customization (e.g., number of coins, selected currencies).
 - 🗂️ Document more edge cases for CSV export.
-- 🔁 Add auto-refresh feature.
 
 ---
 
